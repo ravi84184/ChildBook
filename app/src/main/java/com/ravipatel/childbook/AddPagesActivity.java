@@ -1,6 +1,7 @@
 package com.ravipatel.childbook;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -42,7 +44,7 @@ public class AddPagesActivity extends AppCompatActivity {
 
     private String BookTitle, BookId;
     private static final int REQUEST_CODE_GALLERY = 1;
-
+    private static final int PERMS_REQUEST_CODE = 99;
     private DataBaseHelper db;
 
     private MediaRecorder myAudioRecorder;
@@ -52,15 +54,6 @@ public class AddPagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pages);
-
-
-
-        init();
-
-
-    }
-
-    private void init() {
 
 
         bookTitle = (TextView) findViewById(R.id.titleBook);
@@ -76,6 +69,18 @@ public class AddPagesActivity extends AppCompatActivity {
         btnPlay = (Button) findViewById(R.id.btnPlay);
 
         db = new DataBaseHelper(this);
+
+        btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityCompat.requestPermissions(
+                        AddPagesActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_CODE_GALLERY
+                );
+
+            }
+        });
 
         final String audioId = random();
 
@@ -106,18 +111,6 @@ public class AddPagesActivity extends AppCompatActivity {
         myAudioRecorder.setOutputFile(outputFile);
 
 
-        btnImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityCompat.requestPermissions(
-                        AddPagesActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_GALLERY
-                );
-
-            }
-        });
-
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +128,7 @@ public class AddPagesActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 try {
                     myAudioRecorder.prepare();
                     myAudioRecorder.start();
@@ -150,6 +144,7 @@ public class AddPagesActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -213,6 +208,7 @@ public class AddPagesActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
 
         if (requestCode == REQUEST_CODE_GALLERY){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){

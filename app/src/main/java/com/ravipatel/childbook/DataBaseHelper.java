@@ -38,11 +38,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String sqlBOOK = "CREATE TABLE "+TBL_BOOK+"("+PAGES_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+        String sqlBOOK = "CREATE TABLE IF NOT EXISTS "+TBL_BOOK+"("+PAGES_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +BOOK_TITLE+" VARCHAR,"
                 +BOOK_IMAGE+" BLOG"+");";
 
-        String sqlPAGES = "CREATE TABLE "+TBL_PAGES+"("+PAGES_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+        String sqlPAGES = "CREATE TABLE IF NOT EXISTS "+TBL_PAGES+"("+PAGES_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +PAGES_TEXT+" VARCHAR," +PAGES_AUDIO+" VARCHAR," +PAGES_IMAGE+" BLOG,"
                 +BOOK_ID+" INTEGER, FOREIGN KEY("+BOOK_ID+") REFERENCES "+TBL_BOOK+"("+BOOK_ID+"));";
 
