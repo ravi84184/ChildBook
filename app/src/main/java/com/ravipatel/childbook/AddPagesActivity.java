@@ -38,7 +38,7 @@ public class AddPagesActivity extends AppCompatActivity {
 
 
     private EditText pageTitle;
-    private Button  btnDone, btnImage, btnStart, btnStop, btnPlay;
+    private Button  btnDone, btnFinish, btnImage, btnStart, btnStop, btnPlay;
     private TextView bookTitle;
     private ImageView imageView;
 
@@ -63,12 +63,14 @@ public class AddPagesActivity extends AppCompatActivity {
 
         btnImage = (Button) findViewById(R.id.imageBtn);
         btnDone = (Button) findViewById(R.id.doneBtn);
-
+        btnFinish = findViewById(R.id.btnFinish);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStop = (Button) findViewById(R.id.btnStop);
         btnPlay = (Button) findViewById(R.id.btnPlay);
 
         db = new DataBaseHelper(this);
+
+
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +112,27 @@ public class AddPagesActivity extends AppCompatActivity {
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         myAudioRecorder.setOutputFile(outputFile);
 
+
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pageTitle.getText().toString().equals("")){
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(AddPagesActivity.this, "Direct Go", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    db.addPage(
+                            pageTitle.getText().toString().trim(),
+                            imageViewToByte(imageView),
+                            audioId,
+                            BookId
+                    );
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,7 +297,6 @@ public class AddPagesActivity extends AppCompatActivity {
             buffer.append("name: "+res.getString(1)+"\n");
 
         }
-        showMes("Data",buffer.toString());
 
     }
     public static String random() {
