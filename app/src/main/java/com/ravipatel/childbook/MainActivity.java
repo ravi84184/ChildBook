@@ -67,12 +67,15 @@ public class MainActivity extends AppCompatActivity {
         BookAdapter listViewAdapter = new BookAdapter(this,listItems);
         listView.setAdapter(listViewAdapter);
 
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        
+
+//        myDB.deletePages();
+//        myDB.deleteBook();
 //        Cursor res = myDB.getBookData();
 //        if (res.getCount() == 0){
 //

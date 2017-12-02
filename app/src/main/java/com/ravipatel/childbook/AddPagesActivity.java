@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.*;
 
 public class AddPagesActivity extends AppCompatActivity {
 
@@ -50,6 +53,16 @@ public class AddPagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pages);
 
+
+
+        init();
+
+
+    }
+
+    private void init() {
+
+
         bookTitle = (TextView) findViewById(R.id.titleBook);
 
         pageTitle = (EditText) findViewById(R.id.book_page_text);
@@ -64,9 +77,27 @@ public class AddPagesActivity extends AppCompatActivity {
 
         db = new DataBaseHelper(this);
 
+        final String audioId = random();
 
+        File yourAppDir = new File(Environment.getExternalStorageDirectory()+File.separator+"ChilBook");
 
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/ChildBook/"+bookTitle+".3gp";;
+        if(!yourAppDir.exists() && !yourAppDir.isDirectory())
+        {
+            // create empty directory
+            if (yourAppDir.mkdirs())
+            {
+                Log.i("CreateDir","App dir created");
+            }
+            else
+            {
+                Log.w("CreateDir","Unable to create app dir!");
+            }
+        }
+        else
+        {
+            Log.i("CreateDir","App dir already exists");
+        }
+        outputFile = yourAppDir + "/"+audioId+".3gp";;
 
         myAudioRecorder=new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -93,7 +124,7 @@ public class AddPagesActivity extends AppCompatActivity {
                 db.addPage(
                         pageTitle.getText().toString().trim(),
                         imageViewToByte(imageView),
-                        BookTitle,
+                        audioId,
                         BookId
                 );
                 pageTitle.setText("");
@@ -168,6 +199,7 @@ public class AddPagesActivity extends AppCompatActivity {
         });
 
     }
+
     private byte[] imageViewToByte(ImageView imageView) {
 
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
@@ -248,5 +280,16 @@ public class AddPagesActivity extends AppCompatActivity {
         }
         showMes("Data",buffer.toString());
 
+    }
+    public static String random() {
+        Random generator = new Random();
+        StringBuilder randomStringBuilder = new StringBuilder();
+        int randomLength = generator.nextInt(10);
+        char tempChar;
+        for (int i = 0; i < randomLength; i++){
+            tempChar = (char) (generator.nextInt(96) + 32);
+            randomStringBuilder.append(tempChar);
+        }
+        return randomStringBuilder.toString();
     }
 }

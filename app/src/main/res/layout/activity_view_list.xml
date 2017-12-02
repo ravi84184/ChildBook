@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"/>
 
     <ImageView
+        android:id="@+id/pageImage"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/pageTitle"
@@ -24,6 +25,15 @@
         android:layout_height="300dp"
         android:src="@drawable/android1"/>
 
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:text="play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </RelativeLayout>

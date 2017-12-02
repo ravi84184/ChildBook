@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -53,7 +56,7 @@ public class PageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
 
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null){
 
@@ -72,19 +75,24 @@ public class PageAdapter extends BaseAdapter {
         holder.page_title.setText(pages.getPageTitle());
 
         final byte[] image = pages.getPageImage();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        final Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         Log.e(TAG, "onClick: pages " +pages.getPageImage().toString() );
 
         holder.page_image.setImageBitmap(bitmap);
+
+        ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 90, bStream);
+        final byte[] byteArray = bStream.toByteArray();
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, pages.getPageId(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(context,ViewListActivity.class);
-                intent.putExtra("PAGE_ID",pages.getPageId());
+                intent.putExtra("id", pages.pageId);
+//                intent.putExtra("image",byteArray);
+//                intent.putExtra("audio",pages.getPageAudio());
+//                intent.putExtra("text",pages.getPageTitle());
                 context.startActivity(intent);
 
             }
@@ -99,5 +107,22 @@ public class PageAdapter extends BaseAdapter {
         ImageView page_image;
         TextView page_title;
 
+    }
+    public static String tempFileImage(Context context, Bitmap bitmap, String name) {
+
+        File outputDir = context.getCacheDir();
+        File imageFile = new File(outputDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(context.getClass().getSimpleName(), "Error writing file", e);
+        }
+
+        return imageFile.getAbsolutePath();
     }
 }
