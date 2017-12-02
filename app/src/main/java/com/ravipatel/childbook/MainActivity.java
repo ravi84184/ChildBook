@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         if(checkPermissionsArray(Permissions.PERMISSIONS)){
 
         }else{
