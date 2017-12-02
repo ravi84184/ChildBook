@@ -95,6 +95,7 @@ public class ViewListActivity extends AppCompatActivity {
             }
         }
         else
+
         {
             Log.i("CreateDir","App dir already exists");
         }
