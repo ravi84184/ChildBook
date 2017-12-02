@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ravipatel.childbook.AddBookActivity">
+
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/title"
+        android:text="Book Title"
+        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:layout_below="@+id/title"
+        android:hint="Add Book Title"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/addBookTitle" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/line1"
+        android:layout_below="@+id/addBookTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_margin="10dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp" />
+
+        <Button
+            android:text="get Image"
+            android:id="@+id/btnImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:text="Create New Book"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/line1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>
